@@ -9,6 +9,7 @@ class PlannerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      theme: ThemeData.dark(useMaterial3: true),
       getPages: [
         ...PlannerModulePages.routes,
       ],
