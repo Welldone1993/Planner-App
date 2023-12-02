@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:planner_project/src/pages/home_page/model/daily_tasks_list_view_model.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../controller/home_page_controller.dart';
@@ -15,29 +16,31 @@ class HomePageView extends GetView<HomePageController> {
         ),
         body: Center(
           child: Obx(
-            () => Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _calendar(),
-                _addNewTaskPart(),
-                if (controller.dailyTasks.isNotEmpty)
-                  ...controller.dailyTasks.map(
-                    (task) => Row(
-                      children: [
-                        Checkbox(
-                          value: task.value.isDone,
-                          onChanged: (value) {
-                            controller.onTaskCheckboxTaped(value, task);
-                          },
-                        ),
-                        Text(task.value.taskTitle),
-                      ],
-                    ),
-                  ),
-              ],
-            ),
+            () => controller.isDataFetched.value
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _calendar(),
+                      _addNewTaskPart(),
+                      if (controller.isDataFetched.value)
+                        ...controller.dailyTasks.map(_eachTaskPart),
+                    ],
+                  )
+                : CircularProgressIndicator(),
           ),
         ),
+      );
+
+  Widget _eachTaskPart(DailyTasksListViewModel task) => Row(
+        children: [
+          Checkbox(
+            value: task.isDone,
+            onChanged: (value) {
+              controller.onTaskCheckboxTaped(value, task);
+            },
+          ),
+          Text(task.taskTitle),
+        ],
       );
 
   Widget _addNewTaskPart() => Padding(

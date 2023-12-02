@@ -19,4 +19,11 @@ class DailyTasksListViewModel {
         isDone: isDone ?? this.isDone,
         taskTitle: taskTitle ?? this.taskTitle,
       );
+
+  factory DailyTasksListViewModel.fromJson(Map<String, dynamic> json) =>
+      DailyTasksListViewModel(
+        id: json['id'],
+        isDone: json['isDone'],
+        taskTitle: json['title'],
+      );
 }
